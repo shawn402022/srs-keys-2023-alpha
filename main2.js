@@ -7,67 +7,67 @@
 //removeSVG()
 
 
+const whiteKeyWidth = 80;
+const pianoHeight = 400;
+const naturalNotes = ['C', 'D', 'E', 'F', 'G', 'A', 'B'];
+const naturalNotesSharps = ['C','D','F','G','A']
+const naturalNotesFlats = ['D','E','G','A','B']
+const range = ['C2', 'C7'];
 
-let numberOfOctaves = 6;
-const octaveWidth = 560;
-const naturalNotes = ['C','D','E','F','G','A','B'];
-const range = ['F3','A7']
 
-const SVG = `<svg width="100%" 
-    viewBox="0 0 ${numberOfOctaves * octaveWidth} 400" 
-    version="1.1" xmlns="http://www.w3.org/2000/svg" 
-    xmlns:xlink="http://www.w3.org/1999/xlink" 
-    > 
-    <g id="piano-keyboard"> 
-    </g> 
-</svg>`;
 
 const piano = document.querySelector('#piano');
 
 const app = {
   setupPiano() {
+    const allNaturalNotes = this.getAllNaturalNotes(range);
+    const pianoWidth = allNaturalNotes.length * whiteKeyWidth;
+
+    const SVG = this.createMainSVG(pianoWidth, pianoHeight)
     // add main SVG to paino div
-    piano.innerHTML = SVG;
-    const pianoKeyboard = document.querySelector('#piano-keyboard');
+    piano.appendChild(SVG)
+    
 
-    // Create octaves
-    for (let i = 0; i < numberOfOctaves; i++) {
-      const octave = this.createOctave(i);
-
-      let whiteKeyXPosition = 0;
-      let blackKeyXPosition = 60;
-
-      // Add white keys to octave
-      for (let i = 0; i < 7; i++) {
-        const whiteKey = this.createKey({
-          className: 'white-key',
-          width: 80,
-          height: 400,
-        });
-        whiteKey.setAttribute('x', whiteKeyXPosition);
-        whiteKeyXPosition += 80;
-        octave.appendChild(whiteKey);
-      }
-
-      // add black keys to octave
-      for (let i = 0; i < 5; i++) {
-        const blackKey = this.createKey({
-          className: 'black-key',
-          width: 40,
-          height: 250,
-        });
-        blackKey.setAttribute('x', blackKeyXPosition);
-
-        if (i === 1) {
-          blackKeyXPosition += 160;
-        } else {
-          blackKeyXPosition += 80;
-        }
-        octave.appendChild(blackKey);
-      }
-
-      pianoKeyboard.appendChild(octave);
+    // add white Keys
+    let whiteKeyPositionX = 0;
+    for(let i = 0; i < allNaturalNotes.length; i++) {
+      const whiteKey = this.createKey({ className: "white-key", width: whiteKeyWidth, height: pianoHeight});
+      whiteKey.setAttribute("x", whiteKeyPositionX);
+        whiteKey.setAttribute('data-note-name', allNaturalNotes[i])
+      whiteKeyPositionX += whiteKeyWidth;
+      SVG.appendChild(whiteKey)
     }
+
+    //add black keys
+    let blackKeyPositionX = 60;
+    allNaturalNotes.forEach((naturalNote, index, array) => {
+      const blackKeY = this.createKey( {className: 'black-key', width: whiteKeyWidth /2, height: pianoHeight /1.6})
+      blackKeY.setAttribute('x', blackKeyPositionX);
+
+      for(let i = 0; i < naturalNotesSharps.length; i++) {
+        let naturalSharpNoteName = naturalNotesSharps[i];
+        let naturalFlatNoteName = naturalNotesFlats[i];
+        if (naturalSharpNoteName === naturalNote[0]) {
+          blackKeY.setAttribute('data-sharp-name', `${naturalSharpNoteName}# ${ naturalNote[1]}`);
+          blackKeY.setAttribute('data-flat-name', `${naturalFlatNoteName}b ${ naturalNote[1]}`);
+          // add double spacing between D# and A#
+          if(naturalSharpNoteName === "D" || naturalSharpNoteName === "A") {
+            blackKeyPositionX += whiteKeyWidth * 2;
+          } else {
+            blackKeyPositionX += whiteKeyWidth;
+          }
+          // if last iteration of keys, do not add black key
+          if(index !== array.length - 1) {
+            SVG.appendChild(blackKeY)
+          }
+          
+        }
+
+      }
+
+    })
+
+ 
   },
   createOctave(octaveNumber) {
     const octave = utils.createSVGElement('g');
@@ -91,37 +91,60 @@ const app = {
     //assign octave number, notes and positions to variables
     const firstNoteName = firstNote[0];
     const firstOctaveNumber = parseInt(firstNote[1]);
-    
+
     const lastNoteName = lastNote[0];
     const lastOctaveNumber = parseInt(lastNote[1]);
 
-    const firstNotePosition = naturalNotes.indexOf(firstNoteName)
-    const lastNotePosition = naturalNotes.indexOf(lastNoteName)
+    const firstNotePosition = naturalNotes.indexOf(firstNoteName);
+    const lastNotePosition = naturalNotes.indexOf(lastNoteName);
 
-    const allNaturalNotes = []
-    for (let octaveNumber = firstOctaveNumber; octaveNumber <= lastOctaveNumber; octaveNumber ++) {
-        // handle first octave
-        if(octaveNumber === firstOctaveNumber) {
-          const firstOctave = naturalNotes.slice(firstNotePosition).map((noteName) => {
-            return noteName + octaveNumber;
+    const allNaturalNotes = [];
+    for (
+      let octaveNumber = firstOctaveNumber;
+      octaveNumber <= lastOctaveNumber;
+      octaveNumber++
+    ) {
+
+      // handle first octave
+      if (octaveNumber === firstOctaveNumber) {
+        naturalNotes
+          .slice(firstNotePosition)
+          .forEach((noteName) => {
+            allNaturalNotes.push(noteName + octaveNumber); 
           });
-          allNaturalNotes.push(firstOctave)
+        
+        
         // handle last octave
-        } else if (octaveNumber === lastOctaveNumber) {
-          const lastOctave = naturalNotes.slice(0,lastNotePosition + 1).map((noteName) => {
-            return noteName + octaveNumber
+      } else if (octaveNumber === lastOctaveNumber) {
+        naturalNotes
+          .slice(0, lastNotePosition + 1)
+          .forEach((noteName) => {
+            allNaturalNotes.push(noteName + octaveNumber);
           });
-          allNaturalNotes.push(lastOctave);
-          console.log(allNaturalNotes)
+        
+        console.log(allNaturalNotes);
+      } else {
+        naturalNotes.forEach((noteName) => {
+          allNaturalNotes.push(noteName + octaveNumber)
 
-        }else{
-          allNaturalNotes.push(naturalNotes.map((noteName) => {
-            return noteName + octaveNumber
-          }))
-        }
+        });
+      }
     }
-    return allNaturalNotes
-    console.log(allNaturalNotes)
+    return allNaturalNotes;
+    console.log(allNaturalNotes);
+  },
+
+  createMainSVG(pianoWidth, pianoHeight) {
+    const svg = utils.createSVGElement("svg");
+
+    svg.setAttribute("width", "100%");
+    svg.setAttribute("version", "1.1");
+    svg.setAttribute("xmlns", "http://www.w3.org/2000/svg");
+    svg.setAttribute("xmlns:xlink", "http://www.w3.org/1999/xlink");
+    svg.setAttribute("viewBox", `0 0 ${pianoWidth} ${pianoHeight}`);
+
+    return svg;
+
   }
 };
 
@@ -133,6 +156,4 @@ const utils = {
 };
 
 app.setupPiano();
-app.getAllNaturalNotes(range)
-
-
+app.getAllNaturalNotes(range);
