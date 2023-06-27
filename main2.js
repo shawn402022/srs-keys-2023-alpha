@@ -90,8 +90,8 @@ const app = {
 
           utils.setAttributes(blackKey, {
             'x': blackKeyPositionX,
-            'data-sharp-name': `${naturalSharpNoteName}# ${ naturalNote[1]}`,
-            'data-flat-name': `${naturalFlatNoteName}b ${ naturalNote[1]}`
+            'data-sharp-name': `${naturalSharpNoteName}#${ naturalNote[1]}`,
+            'data-flat-name': `${naturalFlatNoteName}b${ naturalNote[1]}`
 
           });
 
