@@ -1,10 +1,4 @@
-//function removeSVG(){
-// const body = document.querySelector('body')
-//const piano = document.querySelector('svg')
-//body.removeChild(piano)
-//}
-
-//removeSVG()
+//console.log(Tonal.Key.minorKey("Ab"))
 
 
 const whiteKeyWidth = 80;
@@ -14,9 +8,97 @@ const naturalNotesSharps = ['C','D','F','G','A']
 const naturalNotesFlats = ['D','E','G','A','B']
 const range = ['C2', 'C7'];
 
+//midi list with the note names  not a string
+const currentMidiList =[]
+//midi list with the notames is a string 
+const midiNoteShow = []
+
+
+console.log(Tonal.Midi.midiToNoteName(currentMidiList))
 
 
 
+
+
+
+
+
+
+//requestMIDIAccess()
+if (navigator.requestMIDIAccess) {
+  navigator.requestMIDIAccess().then(success, failure)
+}
+
+function success(midiAccess) {
+  //console.log(midiAccess);
+  midiAccess.addEventListener('statechange', updateDevices);
+
+  const inputs = midiAccess.inputs
+  //console.log(inputs)
+
+  inputs.forEach((input => {
+    //console.log(input)
+    input.addEventListener('midimessage', handleInput);
+  }))
+    //This input is for the current note only. I am trying to use it to trigger text and highlighting
+  /*  
+  inputs.forEach((input => {
+    input.addEventListener('midimessage', notePlayed )
+    
+  }))
+  */
+}
+
+
+function handleInput(input) {
+  const command = input.data[0]
+  const note = input.data[1]
+  const velocity = input.data[2]
+  //const midiKey = note.toString()
+  //console.log(midiKey)
+  const midiNote = Tonal.Midi.midiToNoteName(note)
+  
+  //console.log(midiNote)
+  //console.log(midiNoteShow)
+
+
+  switch(command) {
+    case 144: // note is on
+    if (velocity > 0) {
+      noteOn(note,velocity)
+      midiNoteShow.push(midiNote.toString())
+      console.log(midiNoteShow)
+
+    }else{
+      noteOff(note)
+      midiNoteShow.length = 0
+      console.log(midiNoteShow)
+    }
+    break;
+    case 128:
+      noteOff(note)
+      midiNoteShow.length = 0
+      console.log(midiNoteShow)
+      break;
+  } 
+}
+
+function noteOn(note, velocity) {
+  //console.log(note,velocity)
+}
+
+function noteOff(note) {
+  //console.log(note)
+}
+
+function updateDevices(event) {
+  //console.log(event)
+}
+
+
+function failure() {
+  console.log('could not connect')
+}
 
 const app = {
   setupPiano() {
@@ -163,14 +245,14 @@ const app = {
     //assign octave number, notes and positions to variables
     const firstNoteName = firstNote[0];
     const firstOctaveNumber = parseInt(firstNote[1]);
-
     const lastNoteName = lastNote[0];
     const lastOctaveNumber = parseInt(lastNote[1]);
-
     const firstNotePosition = naturalNotes.indexOf(firstNoteName);
     const lastNotePosition = naturalNotes.indexOf(lastNoteName);
 
     const allNaturalNotes = [];
+
+    
     for (
       let octaveNumber = firstOctaveNumber;
       octaveNumber <= lastOctaveNumber;
@@ -203,7 +285,7 @@ const app = {
       }
     }
     return allNaturalNotes;
-    console.log(allNaturalNotes);
+    //console.log(allNaturalNotes);
   },
 
   createMainSVG(pianoWidth, pianoHeight) {
@@ -242,7 +324,7 @@ const app = {
 
       });
     });
-    console.log(pianoKeys)
+    //console.log(pianoKeys)
 
   }
 };
@@ -270,7 +352,9 @@ const utils = {
     })
   }
 };
-
+console.log(midiNoteShow)
 app.setupPiano();
-app.displayNotes(["C# 2",'C2'])
+app.displayNotes(midiNoteShow)
+
+app.displayNotes(['C3'])
 //app.getAllNaturalNotes(range);
