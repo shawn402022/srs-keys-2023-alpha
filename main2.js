@@ -127,16 +127,20 @@ const app = {
             noteOn(note, velocity);
             midiNoteShow.push(midiNote.toString());
             console.log(midiNoteShow);
+            app.displayNotesKeyboard(midiNoteShow);
+
           } else {
             noteOff(note);
             midiNoteShow.length = 0;
             console.log(midiNoteShow);
+            app.displayNotesKeyboard(midiNoteShow);
           }
           break;
         case 128:
           noteOff(note);
           midiNoteShow.length = 0;
           console.log(midiNoteShow);
+          app.displayNotesKeyboard(midiNoteShow);
           break;
       }
     }
@@ -148,7 +152,6 @@ const app = {
     function noteOff(note) {
       //console.log(note)
     }
-
 
 
   },
@@ -332,7 +335,7 @@ const app = {
     return svg;
   },
 
-  displayNotes(notes) {
+  displayNotesKeyboard(notes) {
     const pianoKeys = document.querySelectorAll('.key');
     utils.removeClassFromNodeCollection(pianoKeys, 'show');
 
@@ -348,9 +351,13 @@ const app = {
           flatName === noteName
         ) {
           key.classList.add('show');
-        }
+        } 
       });
+
+
     });
+
+
     //console.log(pianoKeys)
   },
 };
@@ -383,11 +390,12 @@ const utils = {
     });
   },
 };
-console.log(midiNoteShow);
+
 
 app.checkMidiAccess();
 app.setupPiano();
-app.displayNotes(midiNoteShow);
 
-//app.displayNotes(['C3'])
+
+
+//app.displayNotesKeyboard(['C3'])
 //app.getAllNaturalNotes(range);
