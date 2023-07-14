@@ -127,13 +127,16 @@ const app = {
             noteOn(note, velocity);
             midiNoteShow.push(midiNote.toString());
             console.log(midiNoteShow);
+            
             app.displayNotesKeyboard(midiNoteShow);
+            app.displayNotesBox(midiNoteShow);
 
           } else {
             noteOff(note);
             midiNoteShow.length = 0;
             console.log(midiNoteShow);
             app.displayNotesKeyboard(midiNoteShow);
+            app.displayNotesBox(midiNoteShow);
           }
           break;
         case 128:
@@ -141,6 +144,7 @@ const app = {
           midiNoteShow.length = 0;
           console.log(midiNoteShow);
           app.displayNotesKeyboard(midiNoteShow);
+          app.displayNotesBox(midiNoteShow);
           break;
       }
     }
@@ -333,6 +337,15 @@ const app = {
     });
 
     return svg;
+  },
+
+  displayNotesBox() {
+    const notesDisplay = document.querySelector('.bigbox')
+
+    notesDisplay.innerText = ` ${midiNoteShow}`
+    console.log(notesDisplay)
+
+    
   },
 
   displayNotesKeyboard(notes) {

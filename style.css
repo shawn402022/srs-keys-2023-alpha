@@ -36,3 +36,12 @@
 .show.black-key ~ text {
     fill: #000
 }
+
+.bigbox {
+
+    height: 20vh;
+    width: 2in;
+    border: #000;
+    border-width: thick;
+    border-style: dashed;
+}
