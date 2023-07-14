@@ -37,11 +37,21 @@
     fill: #000
 }
 
-.bigbox {
+.notebox {
 
     height: 20vh;
     width: 2in;
     border: #000;
     border-width: thick;
     border-style: dashed;
+}
+
+.chordbox {
+
+    height: 20vh;
+    width: 2in;
+    border: #000;
+    border-width: thick;
+    border-style: double;
+
 }
