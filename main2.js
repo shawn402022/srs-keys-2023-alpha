@@ -1,13 +1,11 @@
-//console.log(Tonal.Key.minorKey("Ab"))
-//import {Chord} from "tonal"
-console.log(Tonal.Chord.detect(["D", "F#", "A", "C"]))
-
 
 const whiteKeyWidth = 80;
 const pianoHeight = 400;
 const naturalNotes = ['C', 'D', 'E', 'F', 'G', 'A', 'B'];
 const naturalNotesSharps = ['C', 'D', 'F', 'G', 'A'];
 const naturalNotesFlats = ['D', 'E', 'G', 'A', 'B'];
+
+// range of keys on keyboard that show in screen.
 const range = ['C2', 'C7'];
 
 //midi list with the note names  not a string
@@ -16,18 +14,12 @@ const currentMidiList = [];
 const midiNoteShow = [];
 
 
-
-
-
-
 const app = {
-  
   checkMidiAccess() {
-
     if (navigator.requestMIDIAccess) {
       navigator.requestMIDIAccess().then(success, failure);
     }
-    
+
     function success(midiAccess) {
       //console.log(midiAccess);
       midiAccess.addEventListener('statechange', updateDevices);
@@ -37,16 +29,16 @@ const app = {
         //console.log(input)
         input.addEventListener('midimessage', handleInput);
       });
-    
+
       console.log('success');
     }
-    
+
     function failure() {
       console.log('could not connect');
     }
 
     function updateDevices(event) {
-      console.log(event)
+      console.log(event);
     }
 
     function handleInput(input) {
@@ -54,7 +46,7 @@ const app = {
       const note = input.data[1];
       const velocity = input.data[2];
       const midiNote = Tonal.Midi.midiToNoteName(note);
-      //const midiChord = 
+      //const midiChord =
 
       switch (command) {
         case 144: // note is on
@@ -67,8 +59,6 @@ const app = {
             //notes appear in text form inside of dotted border when pressed
             app.displayNotesBox(midiNoteShow);
             app.displayChordNotes(midiNoteShow);
-            
-
           } else {
             noteOff(note);
             midiNoteShow.length = 0;
@@ -92,12 +82,10 @@ const app = {
     function noteOn(note, velocity) {
       //console.log(note,velocity)
     }
-    
+
     function noteOff(note) {
       //console.log(note)
     }
-
-
   },
 
   setupPiano() {
@@ -280,17 +268,17 @@ const app = {
   },
 
   displayNotesBox() {
-    const notesDisplay = document.querySelector('.notebox')
+    const notesDisplay = document.querySelector('.notebox');
 
-    notesDisplay.innerText = ` ${midiNoteShow}`
-    console.log(notesDisplay.innerText) 
+    notesDisplay.innerText = ` ${midiNoteShow}`;
+    console.log(notesDisplay.innerText);
   },
 
   displayChordBox() {
-    const chordDisplay = document.querySelector('.chordbox')
-    chordDisplay.innerText = `${midiNoteShow}`
+    const chordDisplay = document.querySelector('.chordbox');
+    chordDisplay.innerText = `${midiNoteShow}`;
     //chords = Tonal.Chord.detect(notes)
-    console.log(chordDisplay.innerText)
+    console.log(chordDisplay.innerText);
   },
 
   displayNotesKeyboard(notes) {
@@ -309,33 +297,26 @@ const app = {
           flatName === noteName
         ) {
           key.classList.add('show');
-        } 
+        }
       });
-
-
     });
-
 
     //console.log(pianoKeys)
   },
 
   displayChordNotes(notes) {
-    const chordDisplay = document.querySelector('.chordbox')
-    chords = Tonal.Chord.detect(notes)
-    chordDisplay.innerText = `${chords}`
-    
-    
-    console.log(chords)
+    const chordDisplay = document.querySelector('.chordbox');
+    chords = Tonal.Chord.detect(notes);
+    chordDisplay.innerText = `${chords}`;
 
-  }
+    console.log(chords);
+  },
 };
 
 const utils = {
-
   clearMidiLists() {
-    currentMidiList.clear()
-    midiNoteShow.clear()
-
+    currentMidiList.clear();
+    midiNoteShow.clear();
   },
 
   createSVGElement(el) {
@@ -359,11 +340,8 @@ const utils = {
   },
 };
 
-
 app.checkMidiAccess();
 app.setupPiano();
-
-
 
 //app.displayNotesKeyboard(['C3'])
 //app.getAllNaturalNotes(range);
