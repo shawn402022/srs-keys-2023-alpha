@@ -1,9 +1,20 @@
 
+
 const whiteKeyWidth = 80;
 const pianoHeight = 400;
 const naturalNotes = ['C', 'D', 'E', 'F', 'G', 'A', 'B'];
 const naturalNotesSharps = ['C', 'D', 'F', 'G', 'A'];
 const naturalNotesFlats = ['D', 'E', 'G', 'A', 'B'];
+const playNotes = [
+  'A0','A1','A2','A3','A4','A5','A6','A7','A8',
+  'B0','B1','B2','B3','B4','B5','B6','B7','B8',
+  'C0','C1','C2','C3','C4','C5','C6','C7','C8',
+  'D0','D1','D2','D3','D4','D5','D6','D7','D8',
+  'E0','E1','E2','E3','E4','E5','E6','E7','E8',
+  'F0','F1','F2','F3','F4','F5','F6','F7','F8',
+  'G0','G1','G2','G3','G4','G5','G6','G7','G8',
+  
+]
 
 // range of keys on keyboard that show in screen.
 const range = ['C2', 'C7'];
@@ -14,12 +25,17 @@ const currentMidiList = [];
 //midi list with the notames is a string
 const midiNoteShow = [];
 
+
+
 //howler sounds used for keyboard
-const pianoSimple = newPiano ({
-  src: ['assets/test808']
+var c3 = new Howl ({
+  src: ['assets/C3.mp3']
 })
 
-sound.play()
+
+
+
+
 
 //----------------------------------------
 //----------------------------------------
@@ -58,6 +74,7 @@ const app = {
       const note = input.data[1];
       const velocity = input.data[2];
       const midiNote = Tonal.Midi.midiToNoteName(note);
+      const midiNoteT = Tonal.Midi.midiToNoteName(note)
       //const midiChord =
 
       switch (command) {
@@ -66,11 +83,18 @@ const app = {
             noteOn(note, velocity);
             midiNoteShow.push(midiNote.toString());
             console.log(midiNoteShow);
+            console.log(midiNoteT)
             //keys light up when pressed
             app.displayNotesKeyboard(midiNoteShow);
             //notes appear in text form inside of dotted border when pressed
             app.displayNotesBox(midiNoteShow);
             app.displayChordNotes(midiNoteShow);
+            app.playHowler(midiNoteT)
+            console.log(midiNoteT)
+
+
+
+
           } else {
             noteOff(note);
             midiNoteShow.length = 0;
@@ -304,6 +328,38 @@ const app = {
     console.log(notesDisplay.innerText);
   },
 
+
+
+  
+
+  playHowler(noteT){
+    function test(){
+      for (let mp of playNotes){
+        console.log(mp)
+        
+      }
+    
+    }
+    test()
+
+
+    if (noteT === "C3") {
+      c3.play()
+      
+    }
+  },
+
+  getSound(sound) {
+    var sound = new Howl({
+      src:['assets/C3.mp3']
+    })
+
+    return sound
+  },
+
+
+
+
   //----------------------------------------
   //----------------------------------------  
 
@@ -382,7 +438,18 @@ const utils = {
       }
     });
   },
+
 };
+
+/*
+function test(){
+  for (let mp of playNotes){
+    console.log(mp)
+  }
+
+}
+test()
+*/
 
 //----------------------------------------
 //----------------------------------------
@@ -391,6 +458,8 @@ const utils = {
 
 app.checkMidiAccess();
 app.setupPiano();
+
+
 
 
 
