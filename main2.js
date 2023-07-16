@@ -13,6 +13,14 @@ const currentMidiList = [];
 //midi list with the notames is a string
 const midiNoteShow = [];
 
+//howler sounds used for keyboard
+const pianoSimple = newPiano ({
+  src: ['assets/test808']
+})
+
+sound.play()
+
+
 
 const app = {
   checkMidiAccess() {
