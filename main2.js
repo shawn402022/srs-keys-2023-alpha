@@ -10,6 +10,7 @@ const range = ['C2', 'C7'];
 
 //midi list with the note names  not a string
 const currentMidiList = [];
+
 //midi list with the notames is a string
 const midiNoteShow = [];
 
@@ -20,7 +21,10 @@ const pianoSimple = newPiano ({
 
 sound.play()
 
-
+//----------------------------------------
+//----------------------------------------
+//----------------------------------------
+//----------------------------------------
 
 const app = {
   checkMidiAccess() {
@@ -95,6 +99,9 @@ const app = {
       //console.log(note)
     }
   },
+
+  //----------------------------------------
+  //----------------------------------------
 
   setupPiano() {
     const piano = document.querySelector('#piano');
@@ -202,6 +209,9 @@ const app = {
     piano.appendChild(SVG);
   },
 
+  //----------------------------------------
+  //----------------------------------------  
+
   createOctave(octaveNumber) {
     const octave = utils.createSVGElement('g');
     octave.classList.add('octave');
@@ -211,6 +221,9 @@ const app = {
     );
     return octave;
   },
+
+  //----------------------------------------
+  //----------------------------------------  
 
   createKey({ className, width, height }) {
     const key = utils.createSVGElement('rect');
@@ -223,6 +236,9 @@ const app = {
 
     return key;
   },
+
+  //----------------------------------------
+  //----------------------------------------  
 
   getAllNaturalNotes([firstNote, lastNote]) {
     //assign octave number, notes and positions to variables
@@ -261,6 +277,9 @@ const app = {
     //console.log(allNaturalNotes);
   },
 
+  //----------------------------------------
+  //----------------------------------------  
+
   createMainSVG(pianoWidth, pianoHeight) {
     const svg = utils.createSVGElement('svg');
 
@@ -275,6 +294,9 @@ const app = {
     return svg;
   },
 
+  //----------------------------------------
+  //----------------------------------------  
+
   displayNotesBox() {
     const notesDisplay = document.querySelector('.notebox');
 
@@ -282,12 +304,18 @@ const app = {
     console.log(notesDisplay.innerText);
   },
 
+  //----------------------------------------
+  //----------------------------------------  
+
   displayChordBox() {
     const chordDisplay = document.querySelector('.chordbox');
     chordDisplay.innerText = `${midiNoteShow}`;
     //chords = Tonal.Chord.detect(notes)
     console.log(chordDisplay.innerText);
   },
+
+  //----------------------------------------
+  //----------------------------------------  
 
   displayNotesKeyboard(notes) {
     const pianoKeys = document.querySelectorAll('.key');
@@ -311,6 +339,9 @@ const app = {
 
     //console.log(pianoKeys)
   },
+ 
+//----------------------------------------
+//---------------------------------------- 
 
   displayChordNotes(notes) {
     const chordDisplay = document.querySelector('.chordbox');
@@ -320,6 +351,11 @@ const app = {
     console.log(chords);
   },
 };
+
+//----------------------------------------
+//----------------------------------------
+//----------------------------------------
+//----------------------------------------
 
 const utils = {
   clearMidiLists() {
@@ -348,8 +384,13 @@ const utils = {
   },
 };
 
+//----------------------------------------
+//----------------------------------------
+//----------------------------------------
+//----------------------------------------
+
 app.checkMidiAccess();
 app.setupPiano();
 
-//app.displayNotesKeyboard(['C3'])
-//app.getAllNaturalNotes(range);
+
+
