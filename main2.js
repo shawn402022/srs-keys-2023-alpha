@@ -27,10 +27,13 @@ const midiNoteShow = [];
 
 
 
-//howler sounds used for keyboard
-var c3 = new Howl ({
+//howler sounds used for keyboard works with line 359
+/*
+var mp = new Howl ({
   src: ['assets/C3.mp3']
+  
 })
+*/
 
 
 
@@ -114,6 +117,8 @@ const app = {
           break;
       }
     }
+
+    
 
     function noteOn(note, velocity) {
       //console.log(note,velocity)
@@ -334,19 +339,33 @@ const app = {
 
   playHowler(noteT){
     function test(){
-      for (let mp of playNotes){
-        console.log(mp)
-        
+      var pSound = new Howl ({
+        src: `['assets/${noteT}.mp3']`
+      })
+      console.log(pSound)
+
+      for (let mp3 of playNotes){
+        //console.log(mp)
+        if (mp3 === noteT) {
+          
+          console.log(pSound._src)
+
+          pSound.play
+          
+        }
       }
     
     }
     test()
 
-
+    //howler sounds used for keyboard works with line 30
+    /*
     if (noteT === "C3") {
-      c3.play()
+      mp.play()
+      console.log(noteT)
       
     }
+    */
   },
 
   getSound(sound) {
