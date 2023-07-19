@@ -21,20 +21,9 @@ const range = ['C2', 'C7'];
 
 //midi list with the note names  not a string
 const currentMidiList = [];
-
 //midi list with the notames is a string
 const midiNoteShow = [];
-
-
-
 //howler sounds used for keyboard works with line 359
-/*
-var mp = new Howl ({
-  src: ['assets/C3.mp3']
-  
-})
-*/
-
 
 
 
@@ -47,6 +36,7 @@ var mp = new Howl ({
 
 const app = {
   checkMidiAccess() {
+
     if (navigator.requestMIDIAccess) {
       navigator.requestMIDIAccess().then(success, failure);
     }
@@ -72,6 +62,13 @@ const app = {
       console.log(event);
     }
 
+    function getHowl(){
+      var music = new Howl({
+        src: ['assets/C3.mp3']
+      })
+    }
+    getHowl()
+
     function handleInput(input) {
       const command = input.data[0];
       const note = input.data[1];
@@ -92,8 +89,8 @@ const app = {
             //notes appear in text form inside of dotted border when pressed
             app.displayNotesBox(midiNoteShow);
             app.displayChordNotes(midiNoteShow);
-            app.playHowler(midiNoteT)
-            console.log(midiNoteT)
+            handleSound(midiNoteT)
+            console.log(handleSound)
 
 
 
@@ -116,9 +113,43 @@ const app = {
           app.displayChordNotes(midiNoteShow);
           break;
       }
+
+      
     }
 
-    
+    {
+      var music = new Howl({
+        src: ['assets/C3.mp3']
+      }) 
+      console.log(music)
+
+
+
+    }
+
+
+
+    function handleSound(noteT){
+      for(let mp3 of playNotes){
+        if(mp3 === noteT) {
+          music._src = `assets/${noteT}.mp3`
+          console.log(music._src)
+          console.log(music)
+          music.play()
+          //pSrc = `"assets/${noteT}.mp3"`
+        }
+      }
+      /*
+      console.log(pSrc)
+
+      if (noteT === "C3") {
+        music.play()
+        console.log(music)
+        
+      }
+      return pSrc
+      */
+    }
 
     function noteOn(note, velocity) {
       //console.log(note,velocity)
@@ -238,6 +269,9 @@ const app = {
     piano.appendChild(SVG);
   },
 
+
+
+
   //----------------------------------------
   //----------------------------------------  
 
@@ -336,13 +370,15 @@ const app = {
 
 
   
-
+  /*
   playHowler(noteT){
     function test(){
+      
       var pSound = new Howl ({
         src: `['assets/${noteT}.mp3']`
       })
       console.log(pSound)
+      
 
       for (let mp3 of playNotes){
         //console.log(mp)
@@ -365,16 +401,12 @@ const app = {
       console.log(noteT)
       
     }
-    */
+    
   },
+  */
+  
 
-  getSound(sound) {
-    var sound = new Howl({
-      src:['assets/C3.mp3']
-    })
 
-    return sound
-  },
 
 
 
@@ -477,6 +509,7 @@ test()
 
 app.checkMidiAccess();
 app.setupPiano();
+
 
 
 
