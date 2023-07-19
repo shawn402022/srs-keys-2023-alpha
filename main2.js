@@ -119,7 +119,17 @@ const app = {
 
     {
       var music = new Howl({
-        src: ['assets/C3.mp3']
+        src: ['assets/piano61c2c7.mp3'],
+        sprite:{
+          C3:[0,3000],
+          D3:[3000,6000],
+          E3:[6000,9000],
+          F3:[6000,9000],
+          G3:[9000,12000],
+          A3:[12000,15000],
+          B3:[15000,18000],
+
+        }
       }) 
       console.log(music)
 
@@ -130,6 +140,7 @@ const app = {
 
 
     function handleSound(noteT){
+      /*
       for(let mp3 of playNotes){
         if(mp3 === noteT) {
           music._src = `assets/${noteT}.mp3`
@@ -139,16 +150,23 @@ const app = {
           //pSrc = `"assets/${noteT}.mp3"`
         }
       }
-      /*
-      console.log(pSrc)
-
-      if (noteT === "C3") {
-        music.play()
-        console.log(music)
-        
-      }
-      return pSrc
       */
+      
+      //console.log(pSrc)
+      snippets = music._sprite
+      
+
+      console.log(snippets)
+
+      for (const key in snippets)
+        
+        if (noteT === key) {
+          music.play(key)
+          console.log(music)
+          
+        }
+      //return pSrc
+      
     }
 
     function noteOn(note, velocity) {
