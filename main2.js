@@ -1,20 +1,9 @@
-
-
 const whiteKeyWidth = 80;
 const pianoHeight = 400;
 const naturalNotes = ['C', 'D', 'E', 'F', 'G', 'A', 'B'];
 const naturalNotesSharps = ['C', 'D', 'F', 'G', 'A'];
 const naturalNotesFlats = ['D', 'E', 'G', 'A', 'B'];
-const playNotes = [
-  'A0','A1','A2','A3','A4','A5','A6','A7','A8',
-  'B0','B1','B2','B3','B4','B5','B6','B7','B8',
-  'C0','C1','C2','C3','C4','C5','C6','C7','C8',
-  'D0','D1','D2','D3','D4','D5','D6','D7','D8',
-  'E0','E1','E2','E3','E4','E5','E6','E7','E8',
-  'F0','F1','F2','F3','F4','F5','F6','F7','F8',
-  'G0','G1','G2','G3','G4','G5','G6','G7','G8',
-  
-]
+
 
 // range of keys on keyboard that show in screen.
 const range = ['C2', 'C7'];
@@ -25,10 +14,6 @@ const currentMidiList = [];
 const midiNoteShow = [];
 //howler sounds used for keyboard works with line 359
 
-
-
-
-
 //----------------------------------------
 //----------------------------------------
 //----------------------------------------
@@ -36,7 +21,6 @@ const midiNoteShow = [];
 
 const app = {
   checkMidiAccess() {
-
     if (navigator.requestMIDIAccess) {
       navigator.requestMIDIAccess().then(success, failure);
     }
@@ -62,19 +46,19 @@ const app = {
       console.log(event);
     }
 
-    function getHowl(){
+    function getHowl() {
       var music = new Howl({
-        src: ['assets/C3.mp3']
-      })
+        src: ['assets/C3.mp3'],
+      });
     }
-    getHowl()
+    getHowl();
 
     function handleInput(input) {
       const command = input.data[0];
       const note = input.data[1];
       const velocity = input.data[2];
       const midiNote = Tonal.Midi.midiToNoteName(note);
-      const midiNoteT = Tonal.Midi.midiToNoteName(note)
+      const midiNoteT = Tonal.Midi.midiToNoteName(note);
       //const midiChord =
 
       switch (command) {
@@ -83,18 +67,20 @@ const app = {
             noteOn(note, velocity);
             midiNoteShow.push(midiNote.toString());
             console.log(midiNoteShow);
-            console.log(midiNoteT)
+            console.log(midiNoteT);
             //keys light up when pressed
             app.displayNotesKeyboard(midiNoteShow);
             //notes appear in text form inside of dotted border when pressed
             app.displayNotesBox(midiNoteShow);
             app.displayChordNotes(midiNoteShow);
-            handleSound(midiNoteT)
-            console.log(handleSound)
 
+            for (const key in music._sprite)
+              if (midiNoteT === key) {
+                music.play(key)
+              }
 
-
-
+            //handleSound(midiNoteT);
+            //console.log(handleSound);
           } else {
             noteOff(note);
             midiNoteShow.length = 0;
@@ -102,6 +88,7 @@ const app = {
             app.displayNotesKeyboard(midiNoteShow);
             app.displayNotesBox(midiNoteShow);
             app.displayChordNotes(midiNoteShow);
+            music.stop();
           }
           break;
         case 128:
@@ -110,64 +97,123 @@ const app = {
           console.log(midiNoteShow);
           app.displayNotesKeyboard(midiNoteShow);
           app.displayNotesBox(midiNoteShow);
-          app.displayChordNotes(midiNoteShow);
+          app.displayChordNotes(midiNoteShow)
+          music.stop();
           break;
       }
-
-      
     }
 
     {
       var music = new Howl({
-        src: ['assets/piano61c2c7.mp3'],
-        sprite:{
-          C3:[0,3000],
-          D3:[3000,6000],
-          E3:[6000,9000],
-          F3:[6000,9000],
-          G3:[9000,12000],
-          A3:[12000,15000],
-          B3:[15000,18000],
+        src: ['assets/k-piano-c1-c8-6000.mp3'],
+        sprite: {
+          C1: [0, 6000],
+          Db1: [6000, 12000],
+          D1: [12000, 18000],
+          Eb1: [18000, 24000],
+          E1: [24000, 30000],
+          F1: [30000, 36000],
+          Gb1: [36000, 42000],
+          G1: [42000, 48000],
+          Ab1: [48000, 54000],
+          A1: [54000, 60000],
+          Bb1: [60000, 66000],
+          B1: [66000, 72000],
+          C2: [72000, 78000],
+          Db2: [78000, 84000],
+          D2: [84000, 90000],
+          Eb2: [90000, 96000],
+          E2: [96000, 102000],
+          F2: [102000, 108000],
+          Gb2: [108000, 114000],
+          G2: [114000, 120000],
+          Ab2: [120000, 126000],
+          A2: [126000, 132000],
+          Bb2: [132000, 138000],
+          B2: [138000, 144000],
+          C3: [144000, 150000],
+          Db3: [150000, 156000],
+          D3: [156000, 162000],
+          Eb3: [162000, 168000],
+          E3: [168000, 174000],
+          F3: [174000, 180000],
+          Gb3: [180000, 186000],
+          G3: [186000, 192000],
+          Ab3: [192000, 198000],
+          A3: [198000, 204000],
+          Bb3: [204000, 210000],
+          B3: [210000, 216000],
+          C4: [216000, 2222000],
+          Db4: [222000, 228000],
+          D4: [228000, 234000],
+          Eb4: [234000, 240000],
+          E4: [240000, 246000],
+          F4: [246000, 252000],
+          Gb4: [252000, 258000],
+          G4: [258000, 264000],
+          Ab4: [264000, 270000],
+          A4: [270000, 276000],
+          Bb4: [276000, 282000],
+          B4: [282000, 288000],
+          C5: [288000, 294000],
+          Db5: [294000, 300000],
+          D5: [300000, 306000],
+          Eb5: [306000, 312000],
+          E5: [312000, 318000],
+          F5: [318000, 324000],
+          Gb5: [324000, 330000],
+          G5: [330000, 336000],
+          Ab5: [336000, 342000],
+          A5: [342000, 348000],
+          Bb5: [348000, 354000],
+          B5: [354000, 360000],
+          C6: [360000, 366000],
+          Db6: [366000, 372000],
+          D6: [372000, 378000],
+          Eb6: [378000, 384000],
+          E6: [384000, 390000],
+          F6: [390000, 396000],
+          Gb6: [396000, 402000],
+          G6: [402000, 408000],
+          Ab6: [408000, 414000],
+          A6: [414000, 420000],
+          Bb6: [420000, 426000],
+          B6: [426000, 432000],
+          C7: [432000, 438000],
+          Db7: [438000, 414000],
+          D7: [444000, 450000],
+          Eb7: [450000, 456000],
+          E7: [456000, 462000],
+          F7: [462000, 468000],
+          Gb7: [468000, 474000],
+          G7: [474000, 480000],
+          Ab7: [480000, 486000],
+          A7: [486000, 452000],
+          Bb7: [452000, 458000],
+          B7: [458000, 464000],
+          C8: [464000, 470000],
+        },
+      });
 
-        }
-      }) 
-      console.log(music)
-
-
-
+      console.log(music);
     }
 
-
-
-    function handleSound(noteT){
-      /*
-      for(let mp3 of playNotes){
-        if(mp3 === noteT) {
-          music._src = `assets/${noteT}.mp3`
-          console.log(music._src)
-          console.log(music)
-          music.play()
-          //pSrc = `"assets/${noteT}.mp3"`
-        }
-      }
-      */
+    /*
+    function handleSound(noteT) {
       
-      //console.log(pSrc)
-      snippets = music._sprite
-      
+      snippets = music._sprite;
 
-      console.log(snippets)
+      console.log(snippets);
 
       for (const key in snippets)
-        
         if (noteT === key) {
-          music.play(key)
-          console.log(music)
-          
-        }
+          music.play(key);
+          console.log(music);
+        } 
+
       //return pSrc
-      
     }
+    */
 
     function noteOn(note, velocity) {
       //console.log(note,velocity)
@@ -289,9 +335,8 @@ const app = {
 
 
 
-
   //----------------------------------------
-  //----------------------------------------  
+  //----------------------------------------
 
   createOctave(octaveNumber) {
     const octave = utils.createSVGElement('g');
@@ -304,7 +349,7 @@ const app = {
   },
 
   //----------------------------------------
-  //----------------------------------------  
+  //----------------------------------------
 
   createKey({ className, width, height }) {
     const key = utils.createSVGElement('rect');
@@ -319,7 +364,7 @@ const app = {
   },
 
   //----------------------------------------
-  //----------------------------------------  
+  //----------------------------------------
 
   getAllNaturalNotes([firstNote, lastNote]) {
     //assign octave number, notes and positions to variables
@@ -359,7 +404,7 @@ const app = {
   },
 
   //----------------------------------------
-  //----------------------------------------  
+  //----------------------------------------
 
   createMainSVG(pianoWidth, pianoHeight) {
     const svg = utils.createSVGElement('svg');
@@ -376,7 +421,7 @@ const app = {
   },
 
   //----------------------------------------
-  //----------------------------------------  
+  //----------------------------------------
 
   displayNotesBox() {
     const notesDisplay = document.querySelector('.notebox');
@@ -385,9 +430,6 @@ const app = {
     console.log(notesDisplay.innerText);
   },
 
-
-
-  
   /*
   playHowler(noteT){
     function test(){
@@ -422,15 +464,9 @@ const app = {
     
   },
   */
-  
-
-
-
-
-
 
   //----------------------------------------
-  //----------------------------------------  
+  //----------------------------------------
 
   displayChordBox() {
     const chordDisplay = document.querySelector('.chordbox');
@@ -440,7 +476,7 @@ const app = {
   },
 
   //----------------------------------------
-  //----------------------------------------  
+  //----------------------------------------
 
   displayNotesKeyboard(notes) {
     const pianoKeys = document.querySelectorAll('.key');
@@ -464,9 +500,9 @@ const app = {
 
     //console.log(pianoKeys)
   },
- 
-//----------------------------------------
-//---------------------------------------- 
+
+  //----------------------------------------
+  //----------------------------------------
 
   displayChordNotes(notes) {
     const chordDisplay = document.querySelector('.chordbox');
@@ -481,6 +517,8 @@ const app = {
 //----------------------------------------
 //----------------------------------------
 //----------------------------------------
+
+
 
 const utils = {
   clearMidiLists() {
@@ -507,7 +545,6 @@ const utils = {
       }
     });
   },
-
 };
 
 /*
@@ -527,9 +564,4 @@ test()
 
 app.checkMidiAccess();
 app.setupPiano();
-
-
-
-
-
 
